@@ -4,3 +4,17 @@ metadata:
   name: nginx-config
   namespace: nginx-ingress
 data:
+  proxy-protocol: "True"
+  real-ip-header: "proxy_protocol"
+  set-real-ip-from: "0.0.0.0/0"
+  ssl-redirect: "false"
+  http-snippets: |
+    server {
+      listen 8080 proxy_protocol;
+      server_tokens off;
+      return 301 https://$host$request_uri;
+    }
+  server-snippets: |
+    gzip on;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_proxied any;
