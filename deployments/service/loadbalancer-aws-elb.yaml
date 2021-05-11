@@ -4,21 +4,22 @@ metadata:
   name: nginx-ingress
   namespace: nginx-ingress
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
     service.beta.kubernetes.io/aws-loadbalancer-enable-proxy-protocol: "true"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
     service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: <cert ARN>
-    ervice.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "<certificate arn>"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
 spec:
   type: LoadBalancer
+#  externalTrafficPolicy: Local
   ports:
   - port: 80
     targetPort: 8080
-#     protocol: TCP
+#    protocol: TCP
     name: http
   - port: 443
     targetPort: 80
-#     protocol: TCP
+#    protocol: TCP
     name: https
   selector:
     app: nginx-ingress
