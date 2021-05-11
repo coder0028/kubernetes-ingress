@@ -8,6 +8,8 @@ data:
   real-ip-header: "proxy_protocol"
   set-real-ip-from: "0.0.0.0/0"
   ssl-redirect: "false"
+  client-max-body-size: "10m"
+
   http-snippets: |
     server {
       listen 8080 proxy_protocol;
@@ -15,6 +17,12 @@ data:
       return 301 https://$host$request_uri;
     }
   server-snippets: |
+    sendfile on;
+    sendfile_max_chunk 512k;
     gzip on;
-    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_vary on;
+    gzip_disable "msie6";
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_types text/plain text/html text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
     gzip_proxied any;
